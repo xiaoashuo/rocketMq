@@ -1,9 +1,16 @@
 spring:
   application:
-    name: love-rocketmq
+    name: rocketmq-provider
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          namesrv-addr: 192.168.136.145:9876;192.168.136.145:9877
+        bindings:
+          input: {consumer.orderly: true}
+      binders:
+        # 这里是个 Map 类型参数，{} 为 YAML 中 Map 的行内写法
+        output: {destination: test-topic, content-type: application/json}
+      bindings:
+        input: {destination: test-topic, content-type: text/plain, group: test-group, consumer.maxAttempts: 1}
 
-#spring boot 方式
-rocketmq:
-  name-server: 192.168.136.145:9876;192.168.136.145:9877
-  producer:
-    group: my-group
